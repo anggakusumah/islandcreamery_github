@@ -11,11 +11,11 @@ if ($_SESSION["user_status"]!="admin") {
 <head>
 
 <?php
-$page_title = " | Thumbnail";
+$page_title = " | Locations";
 include($prefix."static/page_head.php");
 ?>
 
-<script type="text/javascript" src="<?php echo $prefix;?>script/thumbnail.js"></script>
+<script type="text/javascript" src="<?php echo $prefix;?>script/locations.js"></script>
 <script type="text/javascript" src="<?php echo $prefix;?>script/general.js"></script>
 <script type="text/javascript" src="<?php echo $prefix;?>../script/jquery.js"></script>
 <script type="text/javascript" src="<?php echo $prefix;?>script/ui/jquery.ui.core.js"></script>
@@ -29,8 +29,7 @@ $( "#sortable" ).disableSelection();
 });
 </script>
 <link rel="stylesheet" type="text/css" href="<?php echo $prefix;?>style/general.css" />
-<link rel="stylesheet" type="text/css" href="<?php echo $prefix;?>style/thumbnail.css" />
-
+<link rel="stylesheet" type="text/css" href="<?php echo $prefix;?>style/locations.css" />
 <?php
 include($prefix."../static/connect_database.php");
 include($prefix."../static/google_track.php");
@@ -44,9 +43,9 @@ include($prefix."../static/google_track.php");
 
 <div id="page_title_bar">
   <div id="page_title_bar_fill">
-    <div id="page_title">Menus</div>
-    <div id="button_bar"> <a href="<?php echo $prefix;?>menus/loacations/add_locations">
-      <input type="button" id="add_color_button" class="add_button image_button h26_button green_button button" value="Add Thumbnail">
+    <div id="page_title">Locations</div>
+    <div id="button_bar"> <a href="<?php echo $prefix;?>locations/add_locations">
+      <input type="button" id="add_color_button" class="add_button image_button h26_button green_button button" value="Add Locations">
       </a> </div>
   </div>
 </div>
@@ -130,8 +129,50 @@ $get_list =mysql_query("SELECT * from tbl_locations ORDER BY order_ LIMIT $first
     </div>
     <div class="admin_header_row">
       <div class="left_ admin_header" id="check_header" ></div>
-      <div class="left_ admin_header" id="filename_thumbnail_header" ></div>
-      <div class="admin_header" id="title_thumbnail_header" >Name</div>
+      
+	  	<div class="right_ admin_header admin_header_sort
+		<?php if ($_GET["sort_by"]=="address"||$_GET["sort_by"]=="address DESC"){
+			echo " admin_header_selected";
+		}
+		?>
+		" id="address_header" onclick="sortBy('address')">Address
+			<?php if ($_GET["sort_by"]=="address"){?>
+				<div class="header_arrow_down"></div>
+			<?php }?>
+			<?php if ($_GET["sort_by"]=="address DESC"){?>
+				<div class="header_arrow_up"></div>
+			<?php }?>
+		</div>
+		
+		<div class="right_ admin_header admin_header_sort
+		<?php if ($_GET["sort_by"]=="phone"||$_GET["sort_by"]=="phone DESC"){
+			echo " admin_header_selected";
+		}
+		?>
+		" id="phone_header" onclick="sortBy('phone')">Phone
+			<?php if ($_GET["sort_by"]=="phone"){?>
+				<div class="header_arrow_down"></div>
+			<?php }?>
+			<?php if ($_GET["sort_by"]=="phone DESC"){?>
+				<div class="header_arrow_up"></div>
+			<?php }?>
+		</div>
+		
+		<div class="right_ admin_header admin_header_sort
+		<?php if ($_GET["sort_by"]=="opening_hours"||$_GET["sort_by"]=="opening_hours DESC"){
+			echo " admin_header_selected";
+		}
+		?>
+		" id="opening_hours_header" onclick="sortBy('opening_hours')">Opening Hours
+			<?php if ($_GET["sort_by"]=="opening_hours"){?>
+				<div class="header_arrow_down"></div>
+			<?php }?>
+			<?php if ($_GET["sort_by"]=="opening_hours DESC"){?>
+				<div class="header_arrow_up"></div>
+			<?php }?>
+		</div>
+		
+      <div class="admin_header" id="title_header" >Name</div>
     </div>
     <ul id="sortable">
 
@@ -140,7 +181,7 @@ if (mysql_num_rows($get_list)!=null) {
 	for ($row=1;$row<=mysql_num_rows($get_list);$row++) {
 		$get_list_array=mysql_fetch_array($get_list);
 		
-echo '<li list_id="'.$get_list_array["id_thumbnail"].'">';
+echo '<li list_id="'.$get_list_array["id"].'">';
 
 if ($row%2==1) {
 echo '  <div class="odd_row table_row" id="row_'.$row.'" onclick="selectRow('.$row.')">'; }
@@ -148,13 +189,21 @@ else {
 
 echo '  <div class="even_row table_row" id="row_'.$row.'" onclick="selectRow('.$row.')">';}
 echo '    <div class="left_ table_field check_field">
-      <input type="checkbox" name="id_[]" value="'.$get_list_array["id_thumbnail"].'" id="check_'.$row.'" class="" onmouseover="downCheck()" onmouseout="upCheck()" onclick="selectRowCheck('.$row.')"/>
+      <input type="checkbox" name="id_[]" value="'.$get_list_array["id"].'" id="check_'.$row.'" class="" onmouseover="downCheck()" onmouseout="upCheck()" onclick="selectRowCheck('.$row.')"/>
     </div>';
 
 echo '    <input type="hidden" name="order_'.$row.'" value="'.$get_list_array["order_"].'" />';
-echo '    <div class="hidden left_ table_field id_thumbnail_field">'.$get_list_array["id_thumbnail"].'</div>';
+echo '    <div class="hidden left_ table_field id_field">'.$get_list_array["id"].'</div>';
 
-echo '    <div class="table_field title_thumbnail_field"><a class="table_link"  href="detail.php?id_thumbnail='.$get_list_array["id_thumbnail"].'&title_thumbnail='.$get_list_array["title_thumbnail"].'">'.$get_list_array["title_thumbnail"].'</div>';
+echo '    <div class="right_ table_field address_field">'.nl2br($get_list_array["address"]).'</div>';
+
+echo '    <div class="right_ table_field phone_field">'.$get_list_array["phone"].'</div>';
+
+echo '    <div class="right_ table_field opening_hours_field">'.nl2br($get_list_array["opening_hours"]).'</div>';
+
+echo '    <div class="table_field title_field"><a class="table_link" href="detail.php?id='.$get_list_array["id"].'&title='.$get_list_array["title"].'">'.$get_list_array["title"].'</div>';
+
+echo ' <div class="void_row"></div>';
 echo '</div>';
 echo '</li>'; } }
 ?>

@@ -10,9 +10,9 @@ if (mysql_num_rows($get_locations)!=null) {
 for ($counter=1;$counter<=mysql_num_rows($get_locations);$counter++) {
 	$get_locations_array=mysql_fetch_array($get_locations);
 	array_push($title,$get_locations_array["title"]);
-	array_push($address,$get_locations_array["address"]);
+	array_push($address,nl2br($get_locations_array["address"]));
 	array_push($phone,$get_locations_array["phone"]); 
-	array_push($opening_hours,$get_locations_array["opening_hours"]); 
+	array_push($opening_hours,nl2br($get_locations_array["opening_hours"])); 
 	array_push($maps,$get_locations_array["maps"]); 
 	array_push($filename,$get_locations_array["filename"]); } }
 ?>

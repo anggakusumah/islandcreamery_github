@@ -25,7 +25,7 @@ $_CONFIG = array(
 
     'theme' => "oxygen",
 
-    'uploadURL' => "/admin/kcfinder/images",
+    'uploadURL' => "/islandcreamery_github/admin/kcfinder/upload",
     'uploadDir' => "",
 
     'dirPerms' => 0777,

@@ -2,13 +2,21 @@
 session_start();
 if ($_SESSION["user_status"]!="admin") {
 	header("location:../login.php?redirect=read"); }
-	else {
+else {
 		include("../../../static/connect_database.php");
 		
-		$info["title"] = $_POST["title"];
-		$info["description"] = $_POST["description"];
+		$description["Ice Cream"] = $_POST["ice_cream"];
+		$description["Cafe"] = $_POST["cafe"];
+		$description["Dessert"] = $_POST["dessert"];
 		
-		foreach($info as $type=>$fill)mysql_query("UPDATE tbl_menus_info SET fill='$fill' WHERE type='$type'",$con);
+		foreach($description as $title_read=>$description_read){
+			mysql_query("
+				UPDATE tbl_menus_content 
+				SET description_read='$description_read' 
+				WHERE title_read='$title_read'
+			",$con);
+		}
 		
-		header("location:../description?success=true"); }
+		header("location:../description?success=true"); 
+}
 ?>

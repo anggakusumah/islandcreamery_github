@@ -56,15 +56,33 @@ include($prefix."static/page_head.php");
             <input type="text" class="fill_text_box" id="title_thumbnail" name="title_thumbnail" value="<?php echo $title_thumbnail;?>" />
           </div>
         </div>
-        <div class="fill_row">
-          <div class="fill_label">Thumbnails Image <font color="#d82424">*</font><font color="#999999"><i> (152 x 100 px)</i></font></div>
-          <img class="the_image_preview" src="<?php echo $prefix;?>../<?php echo $filename_thumbnail;?>"/>
-          <input type="button" class="left_ h22_button grey_button button" value="Browse File" onclick="selectFile('image_file_')" />
-          <div class="form_6_auto">
-            <input type="text" class="fill_text_box" id="image_filename_thumbnail" name="image_filename_thumbnail" value="<?php echo $filename_thumbnail;?>" />
-          </div>
-          <input type="file" class="fill_file" id="image_file_" name="image_file_" onchange="this.form.image_filename_thumbnail_.value = this.value;"/>
-        </div>
+        
+		<?php
+		echo '<div class="image_row fill_row" id="" onClick="">';
+
+		echo '<div class="image_preview">';
+		if ($filename_thumbnail!=null) {
+		echo '<img class="the_image_preview" src="'.$prefix."../".$filename_thumbnail.'" />'; }
+		echo '</div>';
+
+		echo '<div class="form_1_auto">';
+		echo '<div class="fill_row">';
+		echo '<div class="fill_label_image">Image <br/></div> ';
+		echo '<input type="button" class="left_ h22_button grey_button button" value="Browse File" onClick="selectFile(\'image_file_\')" />';
+
+		echo '<div class="form_5_auto">';
+		echo '<input type="text" class="fill_text_box_file" id="image_filename_thumbnail_" name="" value="'.$filename_thumbnail.'" />';
+		echo '</div>';
+
+		echo '</div>';
+		echo '</div>';
+
+		echo '<input type="file" class="fill_file" id="image_file_" name="image_file_" onChange="this.form.image_filename_thumbnail_.value = this.value;"/>';
+		echo '<div class="void_row"></div>';
+
+		echo '</div>';
+		?>
+		
         <div class="void_row"></div>
       </div>
     </div>
